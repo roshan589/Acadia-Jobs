@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+
+        <!-- Back Button -->
+        <div class="mb-6">
+            <a href="{% url 'job_list' %}" class="text-blue-600 hover:underline flex items-center text-sm font-medium">
+                ← Back to Job Listings
+            </a>
+        </div>
+
+        <!-- Job Title -->
+        <h1 class="text-3xl font-bold mb-4">{{ job.title }}</h1>
+
+        <!-- Company Name + Apply Button inline -->
+        <div class="flex justify-between items-center mb-6">
+            <p class="text-gray-600 text-lg">Company: {{ job.companyName }}</p>
+
+            {% if user.is_authenticated and user.user_type == 'student' %}
+            <a href="{% url 'apply_job' job.id %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm font-semibold">
+                Apply Now
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Posted Date -->
+        <p class="text-sm text-gray-500 mb-8">Posted on {{ job.posted_date|date:"M d, Y" }}</p>
+
+        <!-- Job Description -->
+        <div class="prose prose-lg text-gray-800">
+            <p>{{ job.description|linebreaks }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

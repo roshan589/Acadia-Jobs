@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="flex justify-center items-center h-screen bg-gray-100">
+  <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-lg">
+    <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Create Your Account</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      {% for field in form %}
+        <div class="mb-6">
+          <label for="{{ field.id_for_label }}" class="block mb-2 text-sm font-medium text-gray-700">
+            {{ field.label }}
+          </label>
+          <div class="relative">
+            {% if field.name == "user_type" %}
+              <!-- Dropdown for user_type -->
+              <select name="{{ field.name }}" id="{{ field.id_for_label }}"
+                      class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                {% for choice in field.field.choices %}
+                  <option value="{{ choice.0 }}" {% if choice.0 == field.value %}selected{% endif %}>
+                    {{ choice.1 }}
+                  </option>
+                {% endfor %}
+              </select>
+            {% elif "password" in field.name %}
+              <!-- Password fields -->
+              <input type="password" name="{{ field.name }}" id="{{ field.id_for_label }}"
+                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                     placeholder="{{ field.label }}">
+            {% else %}
+              <!-- Other fields like email, username, etc. -->
+              <input type="text" name="{{ field.name }}" id="{{ field.id_for_label }}"
+                     value="{{ field.value|default:'' }}"
+                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                     placeholder="{{ field.label }}">
+            {% endif %}
+          </div>
+          {% if field.errors %}
+            <p class="text-sm text-red-600 mt-1">{{ field.errors.0 }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <div class="mt-6">
+        <button type="submit"
+                class="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          Sign Up
+        </button>
+      </div>
+    </form>
+
+    <div class="mt-6 text-center text-sm text-gray-600">
+      Already have an account?
+      <a href="{% url 'login' %}" class="text-blue-600 hover:underline">Login</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

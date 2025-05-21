@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-8">
+    <h1 class="text-3xl font-bold mb-6">Edit Application Status</h1>
+    <div class="mb-4">
+        <a href="javascript:history.back()" class="inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-sm font-medium">
+            Back
+        </a>
+    </div>
+    <div class="bg-white p-6 border rounded-lg shadow-md">
+
+        <form method="POST" action="{% url 'edit_status' application.id %}">
+            {% csrf_token %}
+
+            <!-- Applicant Information -->
+            <div class="mb-4">
+                <label for="applicant_name" class="block text-lg font-semibold">Applicant Name:</label>
+                <p id="applicant_name" class="text-gray-700">{{ application.first_name }} {{ application.middle_name }} {{ application.last_name }}</p>
+            </div>
+
+            <div class="mb-4">
+                <label for="position" class="block text-lg font-semibold">Position:</label>
+                <p id="position" class="text-gray-700">{{ application.job.position }} </p>
+            </div>
+            <div class="mb-4">
+                <label for="company" class="block text-lg font-semibold">Company:</label>
+                <p id="company" class="text-gray-700">{{ application.job.companyName }} </p>
+            </div>
+
+            <div class="mb-4">
+                <label for="email" class="block text-lg font-semibold">Email:</label>
+                <p id="email" class="text-gray-700">{{ application.email }}</p>
+            </div>
+
+            <div class="mb-4">
+                <label for="phone-no" class="block text-lg font-semibold">Phone no:</label>
+                <p id="phone-no" class="text-gray-700">{{ application.phone_no }}</p>
+            </div><div class="mb-4">
+                <label for="address" class="block text-lg font-semibold">Address:</label>
+                <p id="address" class="text-gray-700">{{ application.address }} {{ application.city }}, {{ application.state }} </p>
+            </div>
+
+            <div class="mb-4">
+                <label for="availability_start_date" class="block text-lg font-semibold">Availability:</label>
+                <p id="availability_start_date" class="text-gray-700">{{ application.availability_start_date }} - {{application.availability_end_date}} </p>
+            </div>
+
+            <div class="mb-4">
+                <label for="resume" class="block text-lg font-semibold">Resume:</label>
+                <p id="resume" class="text-gray-700">
+                     {% if application.resume %}
+                    <a href="{{ application.resume.url }}" class="text-blue-500 underline" target="_blank">View Resume</a>
+                    {% else %}
+                    No Resume
+                    {% endif %}
+                </p>
+            </div>
+
+
+            <!-- Status Dropdown -->
+            <div class="mb-4">
+                <label for="status" class="block text-lg font-semibold">Update Status:</label>
+                {{ form.job_status }}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mb-4">
+                <button type="submit" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm font-medium">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

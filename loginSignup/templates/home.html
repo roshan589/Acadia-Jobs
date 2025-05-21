@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <section class="bg-white h-[64vh] flex justify-center items-center">
+    <div class="max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8 text-center justify-center items-center">
+      <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+        Discover Student Jobs at <span class="text-red-500">Acadia</span> <span class="text-blue-500">University</span>
+      </h1>
+      <p class="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
+        Acadia Jobs connects students with on-campus and community work opportunities. Build experience, grow your resume, and earn while you learn.
+      </p>
+      <div class="mt-8 flex justify-center space-x-4">
+        <a href="{% url 'signup' %}" class="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg font-medium transition ease-in-out duration-500 hover:bg-gradient-to-r from-red-500 to-blue-500 transform hover:-translate-y-1 hover:scale-110">
+          Get Started
+        </a>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block homepage %}
+  <section class="bg-gray-50 py-12 px-6 md:px-12">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-3xl font-bold text-gray-800 mb-4">About Acadia Jobs</h2>
+      <p class="text-gray-600 text-lg leading-relaxed">
+        Acadia Jobs is a student-centered job platform built for the Acadia University community. Whether you're looking for on-campus part-time work, summer internships, or full-time roles after graduation, we've got you covered.
+      </p>
+    </div>
+  
+    <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto text-center ">
+      <div class="bg-gray-200 p-3 rounded-lg shadow-md transition duration-300 hover:shadow-lg hover:scale-105">
+        <h3 class="text-xl font-semibold text-gray-700">For Students</h3>
+        <p class="text-gray-600 mt-2">Easily search and apply for jobs posted by faculty, departments, and local employers.</p>
+      </div>
+      <div class="bg-gray-200 p-3 rounded-lg shadow-md transition duration-300 hover:shadow-lg hover:scale-105">
+        <h3 class="text-xl font-semibold text-gray-700">For Faculty & Staff</h3>
+        <p class="text-gray-600 mt-2">Post job openings, manage applications, and find the right candidates from within the Acadia community.</p>
+      </div>
+      <div class="bg-gray-200 p-3 rounded-lg shadow-md transition duration-300 hover:shadow-lg hover:scale-105">
+        <h3 class="text-xl font-semibold text-gray-700">Our Mission</h3>
+        <p class="text-gray-600 mt-2">To connect Acadia students with meaningful job opportunities that support their academic and career goals.</p>
+      </div>
+    </div>
+  </section>
+  
+
+  <section class="bg-gray-100 py-16 px-6 md:px-12">
+    <div class="max-w-6xl mx-auto text-center">
+      <h2 class="text-3xl font-bold text-gray-800 mb-10">What Our Users Say</h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <!-- Testimonial 1 -->
+        <div class="bg-white p-6 rounded-2xl shadow p-3 rounded-lg shadow-md transition duration-300 hover:shadow-lg hover:scale-105">
+          <p class="text-gray-700 italic">"Thanks to Acadia  Jobs, I found a part-time library assistant position that fits perfectly with my class schedule!"</p>
+          <div class="mt-4 text-left">
+            <h4 class="font-semibold text-gray-800">Sarah Thompson</h4>
+            <p class="text-sm text-gray-500">2nd Year Computer Science</p>
+          </div>
+        </div>
+  
+        <!-- Testimonial 2 -->
+        <div class="bg-white p-6 rounded-2xl shadow p-3 rounded-lg shadow-md transition duration-300 hover:shadow-lg hover:scale-105">
+          <p class="text-gray-700 italic">"Posting research assistant jobs and reviewing applications has never been easier. The system is seamless and efficient."</p>
+          <div class="mt-4 text-left">
+            <h4 class="font-semibold text-gray-800">Dr. Alan Hughes</h4>
+            <p class="text-sm text-gray-500">Faculty, Biology Department</p>
+          </div>
+        </div>
+  
+        <!-- Testimonial 3 -->
+        <div class="bg-white p-6 rounded-2xl p-3 rounded-lg shadow-md transition duration-300 hover:shadow-lg hover:scale-105">
+          <p class="text-gray-700 italic">"Acadia Jobs helped me secure a summer internship in Wolfville. It was exactly what I needed to boost my resume."</p>
+          <div class="mt-4 text-left">
+            <h4 class="font-semibold text-gray-800">Liam Chen</h4>
+            <p class="text-sm text-gray-500">3rd Year Business Student</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+{% endblock %}

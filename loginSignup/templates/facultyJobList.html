@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-8">
+    <h1 class="text-3xl font-bold mb-6">My Posted Jobs</h1>
+    <div class="mb-4">
+        <a href="{% url 'test' %}" class="inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-sm font-medium">
+            Back
+        </a>
+    </div>
+    <div class="grid gap-6">
+        {% for job in jobs %}
+        <a href="{% url 'job_applications' job.id %}" class="block p-6 border rounded-lg shadow hover:shadow-lg transition">
+            <h2 class="text-xl font-semibold">{{ job.title }}</h2>
+            <p class="text-gray-600">{{ job.companyName }}</p>
+            <p class="text-sm text-gray-400">Posted on {{ job.posted_date|date:"M d, Y" }}</p>
+        </a>
+        {% empty %}
+        <p>You haven't posted any jobs yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

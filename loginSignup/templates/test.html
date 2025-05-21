@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="bg-gray-100 px-4 py-4 w-full">
+
+  <div class="max-w-full bg-white p-4 mx-auto rounded-lg shadow-md">
+
+    {% if messages %}
+        <div class="fixed top-20 right-5 w-72 bg-green-100 text-green-700 text-sm p-4 rounded-lg shadow-lg flex items-start z-50 space-x-3">
+            <!-- Warning Icon -->
+            <div class="flex-shrink-0">
+                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+
+            <!-- Message Content -->
+            <div class="flex-1">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Close Button -->
+            <button class="flex-shrink-0 text-green-700 text-lg" onclick="this.parentElement.style.display='none'">
+                <i class="uil uil-times-circle text-2xl"></i>
+            </button>
+        </div>
+    {% endif %}
+
+    <h1 class="text-2xl font-bold text-gray-800 text-center mb-6">
+        Welcome, {{ user.first_name }}
+    </h1>
+    <div class="mb-8 bg-gray-50 p-6 rounded-lg shadow-inner">
+      <form method="POST" class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        {% csrf_token %}
+        <div>
+          <label for="{{ form.title.id_for_label }}" class="block text-gray-700 text-sm font-medium mb-1">Title</label>
+          <input type="text" name="title" id="{{ form.title.id_for_label }}" value="{{ form.title.value|default_if_none:'' }}"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+        </div>
+        
+    
+        <div>
+          <label for="{{ form.date_posted.id_for_label }}" class="block text-gray-700 text-sm font-medium mb-1">Date Posted</label>
+          <input type="date" name="posted_on" id="{{ form.date_posted.id_for_label }}" value="{{ form.date_posted.value|default_if_none:'' }}"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+        </div>
+    
+        <div class="col-span-1 sm:col-span-2 md:col-span-4 flex justify-center mt-2">
+          <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200">
+            Filter Jobs
+          </button>
+        </div>
+    
+      </form>
+    </div>
+
+    <div class="container mx-auto py-6">
+      <h1 class="text-3xl font-bold text-center mb-6">Job Listings</h1>
+    <div class="flex flex-wrap justify-center gap-6">
+
+      <div class="bg-blue-100 p-6 w-full sm:w-72 flex flex-col items-center rounded-lg shadow hover:bg-blue-200 transition">
+        <h2 class="text-lg font-semibold text-blue-800 mb-2">Apply for Jobs</h2>
+        <p class="text-gray-700 mb-2 text-center">Browse and apply to job opportunities posted by faculty.</p>
+        <a href="{% url 'job_list'%}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">View Jobs</a>
+      </div>
+
+
+
+      {% if can_see_applications %}
+      <div class="bg-indigo-100 p-6 w-full sm:w-72 flex flex-col items-center rounded-lg shadow hover:bg-indigo-200 transition">
+        <h2 class="text-lg font-semibold text-indigo-800 mb-2">See the Job Applications</h2>
+        <p class="text-gray-700 mb-2 text-center">See the Job Application for your job posting.</p>
+        <a href="{% url 'faculty_job_list' %}" class="inline-block px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">View Jobs</a>
+      </div>
+      {% endif %}
+
+      {% if can_see_jobApplicationStatus %}
+      <div class="bg-blue-100 p-6 w-full sm:w-72 flex flex-col items-center rounded-lg shadow hover:bg-blue-200 transition">
+        <h2 class="text-lg font-semibold text-blue-800 mb-2">Application Update</h2>
+        <p class="text-gray-700 mb-2 text-center">See the Update of Applied Jobs</p>
+        <a href="{% url 'job_status' %}" class="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">View Jobs</a>
+      </div>
+      {% endif %}
+
+      {% if can_post_jobs %}
+      <div class="bg-green-100 p-6 w-full sm:w-72 flex flex-col items-center rounded-lg shadow hover:bg-green-200 transition">
+        <h2 class="text-lg font-semibold text-green-800 mb-2">Post a Job</h2>
+        <p class="text-gray-700 mb-2 text-center">Create new job opportunities for students.</p>
+        <a href="{% url 'post_job' %}" class="inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Post Job</a>
+      </div>
+      {% endif %}
+
+      {% if can_manage_jobs %}
+      <div class="bg-yellow-100 p-6 w-full sm:w-72 flex flex-col items-center rounded-lg shadow hover:bg-yellow-200 transition">
+        <h2 class="text-lg font-semibold text-yellow-800 mb-2">Manage Jobs Post</h2>
+        <p class="text-gray-700 mb-2 text-center">View, edit and delete the job posts.</p>
+        <a href="{% url 'manage_jobs' %}" class="inline-block px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700">Manage Jobs</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
