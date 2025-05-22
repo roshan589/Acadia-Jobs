@@ -10,7 +10,7 @@ services:
       - "8001:8000"  # Host:Container
     volumes:
       - .:/app
-    command: python manage.py runserver 0.0.0.0:8000
+
   #   depends_on:
   #     - nginx
 
