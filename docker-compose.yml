@@ -7,7 +7,7 @@ services:
     image: acadia-job-image
     container_name: acadia-job-container
     ports:
-      - "8000:8000"  # Host:Container
+      - "8001:8000"  # Host:Container
     volumes:
       - .:/app
 
