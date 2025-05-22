@@ -19,4 +19,4 @@ COPY . /app
 
 EXPOSE 8000
 
-CMD ["gunicorn", "manage.py", "runserver"]
+CMD ["gunicorn", "employementProject.wsgi"]
