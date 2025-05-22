@@ -137,6 +137,10 @@ USE_I18N = True
 
 USE_TZ = True
 
+CSRF_TRUSTED_ORIGINS = [
+  'https://wise-drucie-acadiajobs-40ce462a.koyeb.app',
+]
+
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',  # Default backend
