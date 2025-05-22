@@ -5,3 +5,6 @@ django-tailwind==4.0.1
 sqlparse==0.5.3
 tzdata==2025.2
 dotenv
+psycopg2
+gunicorn
+whitenoise

@@ -1,0 +1,8 @@
+SECRET_KEY = 'django-insecure-iu9!4nk$u0ak#l_(%7vm7f7reo1-gbo722v*a6_q5#$t2n%gx7'
+
+'NAME': 'koyebdb'
+'USER': 'koyeb-adm'
+'PASSWORD': 'npg_C8AOBaMEp4uQ'
+'HOST': 'ep-old-fire-a27zhz4d.eu-central-1.pg.koyeb.app'
+EMAIL_HOST_USER = 'roshanadhikari0420@gmail.com'
+EMAIL_HOST_PASSWORD = 'dolv luer xyla lcps'
