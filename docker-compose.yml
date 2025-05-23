@@ -24,6 +24,12 @@ services:
     depends_on:
       - web
 
+  tailwind:
+    command: python manage.py tailwind build
+    depends_on:
+      - web
+
 volumes:
   static_volume:
   media_volume:
+
