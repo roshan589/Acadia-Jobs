@@ -25,6 +25,7 @@ services:
       - web
 
   tailwind:
+    build: .
     command: python manage.py tailwind build
     depends_on:
       - web
