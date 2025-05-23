@@ -19,4 +19,4 @@ COPY . /app
 
 EXPOSE 8000
 
-CMD ["gunicorn", "employementProject.wsgi"]
+CMD ["gunicorn", "employementProject.wsgi:application", "--bind", "0.0.0.0:8000"]
