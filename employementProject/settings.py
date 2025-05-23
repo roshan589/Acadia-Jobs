@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['wise-drucie-acadiajobs-40ce462a.koyeb.app']
+ALLOWED_HOSTS = ['3.99.248.41']
 
 
 # Application definition
