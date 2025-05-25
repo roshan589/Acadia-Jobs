@@ -15,7 +15,7 @@ def send_job_email(sender, instance, created, **kwargs):
         subject = f"New Job Posted: {instance.title}"
         from_email = settings.DEFAULT_FROM_EMAIL
 
-        users = CustomUser.objects.all()
+        users = CustomUser.objects.exclude(id=instance.posted_by.id)
         recipient_list = [user.email for user in users if user.email]
 
         for email in recipient_list:
