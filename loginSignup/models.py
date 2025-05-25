@@ -65,7 +65,7 @@ class CreateJob(models.Model):
     companyName = models.CharField(max_length=100)
     description = models.TextField()
     posted_by = models.ForeignKey('loginSignup.CustomUser', on_delete=models.CASCADE)
-    posted_date = models.DateTimeField(auto_now_add=True)
+    posted_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.title
