@@ -2,7 +2,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from django.contrib.sites.models import Site
 from django.conf import settings
 
 from .models import CreateJob
@@ -11,8 +10,7 @@ from loginSignup.models import CustomUser  # adjust if needed
 @receiver(post_save, sender=CreateJob)
 def send_job_email(sender, instance, created, **kwargs):
     if created:
-        current_site = Site.objects.get_current()
-        job_url = f"https://{current_site.domain}/jobs/{instance.id}/"
+        job_url = f"https://{settings.DOMAIN}/jobs/{instance.id}/"
 
         subject = f"New Job Posted: {instance.title}"
         from_email = settings.DEFAULT_FROM_EMAIL
