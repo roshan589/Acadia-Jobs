@@ -10,7 +10,7 @@ from loginSignup.models import CustomUser  # adjust if needed
 @receiver(post_save, sender=CreateJob)
 def send_job_email(sender, instance, created, **kwargs):
     if created:
-        job_url = f"http://{settings.DOMAIN}/jobs/{instance.id}/"
+        job_url = f"http://{settings.DOMAIN}/detail/{instance.id}/"
 
         subject = f"New Job Posted: {instance.title}"
         from_email = settings.DEFAULT_FROM_EMAIL
