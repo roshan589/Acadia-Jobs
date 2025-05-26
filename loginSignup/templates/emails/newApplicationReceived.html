@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Application Received.</title>
+</head>
+<body>
+  <div class="max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md font-sans">
+  <p class="text-gray-700 text-lg mb-4">
+    Hello <span class="font-semibold text-gray-900">{{ faculty.first_name }}</span>,
+  </p>
+
+  <p class="text-gray-700 mb-4">
+    <span class="font-semibold">{{ applicant.first_name }} {{ applicant.last_name }}</span>
+    has applied for the job: 
+    <strong class="text-blue-600">{{ job.title }}</strong>.
+  </p>
+
+  <a href="{{ job_url }}"
+     class="inline-block mt-4 px-4 py-2 bg-blue-600 text-white font-medium text-sm rounded hover:bg-blue-700 transition duration-200">
+    View Applications
+  </a>
+</div>
+
+</body>
+</html>
