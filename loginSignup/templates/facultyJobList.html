@@ -13,7 +13,7 @@
         <a href="{% url 'job_applications' job.id %}" class="block p-6 border rounded-lg shadow hover:shadow-lg transition">
             <h2 class="text-xl font-semibold">{{ job.title }}</h2>
             <p class="text-gray-600">{{ job.companyName }}</p>
-            <p class="text-sm text-gray-400">Posted on {{ job.posted_date|date:"M d, Y" }}</p>
+            <p class="text-sm text-gray-400">Posted on: {{ job.posted_date |date:"M d, Y" }}</p>
         </a>
         {% empty %}
         <p>You haven't posted any jobs yet.</p>
