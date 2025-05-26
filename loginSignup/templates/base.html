@@ -26,7 +26,7 @@
         <div class="hidden md:flex items-center space-x-8">
           <a href="{% if request.user.is_authenticated %}{% url 'test' %}{% else %}{% url 'home' %}{% endif %}" class="text-gray-700 hover:text-blue-500 font-bold">Home</a>
           <a href="{% url 'job_list' %}" class="text-gray-700 hover:text-blue-500 font-bold">Job Lists</a>
-          <a href="{% url 'job_search' %}" class="text-gray-700 hover:text-blue-500 font-bold">Search</a>
+          <a href="{% url 'job-search' %}" class="text-gray-700 hover:text-blue-500 font-bold">Search</a>
         </div>
         {% endif %}
 
