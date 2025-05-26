@@ -24,7 +24,7 @@ class VerificationCode(forms.Form):
 class JobPost(forms.ModelForm):
     class Meta:
         model = CreateJob
-        fields = ['title', 'position', 'companyName', 'description']
+        fields = ['title', 'position', 'companyName','jobType', 'location', 'applicationDeadline', 'description']
 
 
 
@@ -32,7 +32,7 @@ class JobApplyForm(forms.ModelForm):
     class Meta:
         model = ApplyJob
         fields = ['first_name', 'last_name', 'email','address','city','state', 'phone_no', 'availability_start_date', 'availability_end_date', 'resume']
-        resume = forms.FileField(required=False)
+        resume = forms.FileField(required=True)
 
 
 class StatusUpdateForm(forms.ModelForm):

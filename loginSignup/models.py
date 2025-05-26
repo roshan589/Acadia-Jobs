@@ -60,9 +60,22 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 
 class CreateJob(models.Model):
+    JOB_TYPE = (
+        ("full-time", "Full Time"),
+        ("part-time", "Part Time"),
+        ("internship", "Internship"),
+        ("co-op", "Co-op")
+    )
+    LOCATION = (
+        ("remote", "Remote"),
+        ("in-person", "In Person")
+    )
     title = models.CharField(max_length=200)
     position = models.CharField(max_length=100)
     companyName = models.CharField(max_length=100)
+    jobType = models.CharField(max_length=50, default="")
+    location = models.CharField(max_length=50, default="")
+    applicationDeadline = models.DateField(default="")
     description = models.TextField()
     posted_by = models.ForeignKey('loginSignup.CustomUser', on_delete=models.CASCADE)
     posted_date = models.DateField(auto_now_add=True)
