@@ -42,7 +42,7 @@ def send_apply_email(sender, instance, created, **kwargs):
     if created:
         job = instance.job
         faculty = job.posted_by
-        job_url = f"http://{settings.DOMAIN}/faculty/job/{job.id}/applications"
+        application_url = f"http://{settings.DOMAIN}/faculty/job/{job.id}/applications"
 
         subject = f"New Application for {job.title}"
         from_email = settings.DEFAULT_FROM_EMAIL
@@ -59,7 +59,7 @@ def send_apply_email(sender, instance, created, **kwargs):
                 "faculty": faculty,
                 "job": job,
                 "applicant": instance,
-                "job_url": job_url
+                "job_url": application_url
             })
 
             msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
@@ -70,6 +70,7 @@ def send_apply_email(sender, instance, created, **kwargs):
 def notify_applicant_status_change(sender, instance, created, **kwargs):
     if created:
         return
+    status_url = f"http://{settings.DOMAIN}/student/job-status/"
 
     try:
         previous = ApplyJob.objects.get(pk=instance.pk)
@@ -85,7 +86,7 @@ def notify_applicant_status_change(sender, instance, created, **kwargs):
         subject = f"Update on Your Application for '{job.title}'"
         from_email = settings.DEFAULT_FROM_EMAIL
         to_email = applicant.email
-
+        
         # Customize message based on status
         if new_status == ApplyJob.PENDING:
             message = "Your application has been received and is pending review."
@@ -113,6 +114,7 @@ def notify_applicant_status_change(sender, instance, created, **kwargs):
             "job": job,
             "status": status_display,
             "message": message,
+            "status_link":status_url
         })
 
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
