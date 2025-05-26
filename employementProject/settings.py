@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'loginSignup',
     'tailwind',
-    'theme',
+    # 'theme',
     'django.contrib.sites',
     'django_browser_reload',
 
