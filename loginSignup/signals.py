@@ -58,7 +58,8 @@ def send_apply_email(sender, instance, created, **kwargs):
             html_content = render_to_string("emails/newApplicationReceived.html", {
                 "faculty": faculty,
                 "job": job,
-                "applicant": instance
+                "applicant": instance,
+                "job_url": job_url
             })
 
             msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
