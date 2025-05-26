@@ -1,89 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="max-w-2xl mx-auto mt-12 bg-white shadow-lg rounded-xl p-8">
-  <div class="mb-6">
-    <a href="{% url 'test' %}" class="inline-flex items-center bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 text-sm font-medium transition-colors duration-200">
-      <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-      </svg>
-      Back
-    </a>
-  </div>
+<div class="max-w-xl mx-auto mt-10 bg-white shadow rounded p-6">
+  <a href="{% url 'test' %}" class="inline-flex items-center text-sm text-blue-600 hover:underline mb-4">
+    ← Back
+  </a>
 
-  <h2 class="text-3xl font-bold mb-8 text-center text-gray-900">Create Job Post</h2>
+  <h2 class="text-2xl font-bold mb-6 text-center">Create Job Post</h2>
 
-  <form method="POST" class="space-y-6">
+  <form method="POST" class="space-y-4">
     {% csrf_token %}
+
     {% for field in form %}
       <div>
-        <label for="{{ field.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-2">
+        <label for="{{ field.id_for_label }}" class="block mb-1 font-medium text-sm">
           {{ field.label }}
         </label>
-
-        <div class="relative">
-          {% if field.field.widget.input_type == "textarea" or field.name == "description" %}
-            <textarea
-              name="{{ field.name }}"
-              id="{{ field.id_for_label }}"
-              class="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-              rows="6"
-              placeholder="{{ field.label }}"
-            >{{ field.value|default:'' }}</textarea>
-
-          {% elif field.field.widget.input_type == "select" %}
-            <select
-              name="{{ field.name }}"
-              id="{{ field.id_for_label }}"
-              class="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-            >
-              {% for option in field.field.choices %}
-                <option value="{{ option.0 }}" {% if option.0 == field.value %}selected{% endif %}>
-                  {{ option.1 }}
-                </option>
-              {% endfor %}
-            </select>
-
-          {% elif field.field.widget.input_type == "date" %}
-            <input
-              type="date"
-              name="{{ field.name }}"
-              id="{{ field.id_for_label }}"
-              value="{{ field.value|default:'' }}"
-              class="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-            >
-
-          {% elif field.field.widget.input_type == "radio" %}
-            <div class="flex flex-col gap-2">
-              {% for subwidget in field %}
-                <label class="inline-flex items-center space-x-2">
-                  {{ subwidget.tag }}
-                  <span class="text-gray-700">{{ subwidget.choice_label }}</span>
-                </label>
-              {% endfor %}
-            </div>
-
-          {% else %}
-            <input
-              type="{{ field.field.widget.input_type|default:'text' }}"
-              name="{{ field.name }}"
-              id="{{ field.id_for_label }}"
-              value="{{ field.value|default:'' }}"
-              placeholder="{{ field.label }}"
-              class="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-            >
-          {% endif %}
-
-          {% if field.errors %}
-            <p class="text-sm text-red-600 mt-2">{{ field.errors.0 }}</p>
-          {% endif %}
-        </div>
+        {{ field }}
+        {% if field.errors %}
+          <p class="text-sm text-red-600 mt-1">{{ field.errors.0 }}</p>
+        {% endif %}
       </div>
     {% endfor %}
 
     <button
       type="submit"
-      class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+      class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
     >
       Submit
     </button>
