@@ -101,4 +101,7 @@ class ApplyJob(models.Model):
     applied_on = models.DateTimeField(auto_now_add=True)
     job_status = models.CharField(max_length=100, choices=JOB_STATUS_CHOICES, default=PENDING)
 
+    class Meta:
+        unique_together = ('user', 'job')
+
 
