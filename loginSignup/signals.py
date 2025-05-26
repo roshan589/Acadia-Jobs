@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -66,28 +66,30 @@ def send_apply_email(sender, instance, created, **kwargs):
             msg.attach_alternative(html_content, "text/html")
             msg.send()
 
+@receiver(pre_save, sender=ApplyJob)
+def cache_old_status(sender, instance, **kwargs):
+    if not instance.pk:
+        instance._old_job_status = None
+    else:
+        old_instance = ApplyJob.objects.get(pk=instance.pk)
+        instance._old_job_status = old_instance.job_status
+
 @receiver(post_save, sender=ApplyJob)
 def notify_applicant_status_change(sender, instance, created, **kwargs):
     if created:
         return
-    status_url = f"http://{settings.DOMAIN}/student/job-status/"
 
-    try:
-        previous = ApplyJob.objects.get(pk=instance.pk)
-    except ApplyJob.DoesNotExist:
-        return
-
-    if previous.job_status != instance.job_status:
+    if getattr(instance, '_old_job_status', None) != instance.job_status:
         applicant = instance.user
         job = instance.job
         new_status = instance.job_status
         status_display = instance.get_job_status_display()
+        status_url = f"http://{settings.DOMAIN}/student/job-status/"
 
         subject = f"Update on Your Application for '{job.title}'"
         from_email = settings.DEFAULT_FROM_EMAIL
         to_email = applicant.email
-        
-        # Customize message based on status
+
         if new_status == ApplyJob.PENDING:
             message = "Your application has been received and is pending review."
         elif new_status == ApplyJob.IN_REVIEW:
@@ -114,7 +116,7 @@ def notify_applicant_status_change(sender, instance, created, **kwargs):
             "job": job,
             "status": status_display,
             "message": message,
-            "status_url":status_url
+            "status_url": status_url
         })
 
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
