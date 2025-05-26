@@ -75,7 +75,7 @@ class CreateJob(models.Model):
     companyName = models.CharField(max_length=100)
     jobType = models.CharField(max_length=50, default="")
     location = models.CharField(max_length=50, default="")
-    applicationDeadline = models.DateField(default=None)
+    applicationDeadline = models.DateField()
     description = models.TextField()
     posted_by = models.ForeignKey('loginSignup.CustomUser', on_delete=models.CASCADE)
     posted_date = models.DateField(auto_now_add=True)
