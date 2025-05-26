@@ -1,51 +1,56 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<!-- Filter Form -->
 <div class="mb-8 bg-gray-50 p-6 rounded-lg shadow-inner">
-      <form method="POST" class="flex flex-col sm:flex-row justify-between items-center gap-4">
-        {% csrf_token %}
-        <div>
-          <label for="{{ form.title.id_for_label }}" class="block text-gray-700 text-sm font-medium mb-1">Title</label>
-          <input type="text" name="title" id="{{ form.title.id_for_label }}" value="{{ form.title.value|default_if_none:'' }}"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
-        </div>
-        
-    
-        <div>
-          <label for="{{ form.date_posted.id_for_label }}" class="block text-gray-700 text-sm font-medium mb-1">Date Posted</label>
-          <input type="date" name="posted_on" id="{{ form.date_posted.id_for_label }}" value="{{ form.date_posted.value|default_if_none:'' }}"
-            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
-        </div>
-    
-        <div class="col-span-1 sm:col-span-2 md:col-span-4 flex justify-center mt-2">
-          <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200">
-            Filter Jobs
-          </button>
-        </div>
-    </form>
-</div>
-<div class="container mx-auto px-4 py-8">
-    <!-- Page Heading -->
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">Job Listings</h1>
-        <a href="{% url 'test' %}" class="text-sm text-white bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded">
-            ← Back
-        </a>
+  <form method="GET" class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div>
+      <label for="title" class="block text-gray-700 text-sm font-medium mb-1">Title</label>
+      <input type="text" name="title" id="title" value="{{ request.GET.title|default_if_none:'' }}"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
     </div>
 
-    <!-- Job Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {% for job in job_posts %}
-          <div class="border p-4 rounded-lg shadow hover:shadow-lg transition duration-300 ease-in-out">
-              <h2 class="font-semibold text-xl text-blue-700">{{ job.title }}</h2>
-              <p class="text-gray-600"><strong>Company:</strong> {{ job.companyName }}</p>
-              <p class="text-gray-400 text-sm">Posted on: {{ job.posted_date }}</p>
-              <a href="{% url 'job_detail' job.id %}" class="text-blue-600 hover:text-blue-800 font-medium">View Details →</a>
-          </div>
-      {% empty %}
-          <p class="text-center col-span-full text-gray-500">No jobs found matching your criteria.</p>
-      {% endfor %}
+    <div>
+      <label for="posted_on" class="block text-gray-700 text-sm font-medium mb-1">Date Posted</label>
+      <input type="date" name="posted_on" id="posted_on" value="{{ request.GET.posted_on|default_if_none:'' }}"
+        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+    </div>
+
+    <div class="flex items-end justify-end">
+      <button type="submit"
+        class="w-full px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200">
+        Filter Jobs
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- Job Listings -->
+<div class="container mx-auto px-4 py-8">
+  <!-- Page Heading -->
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-800">Job Listings</h1>
+    <a href="{% url 'test' %}" class="text-sm text-white bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded">
+      ← Back
+    </a>
+  </div>
+
+  <!-- Job Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for job in job_posts %}
+      <div class="border p-4 rounded-lg shadow hover:shadow-lg transition duration-300 ease-in-out bg-white">
+        <h2 class="font-semibold text-xl text-blue-700">{{ job.title }}</h2>
+        <p class="text-gray-600"><strong>Company:</strong> {{ job.companyName }}</p>
+        <p class="text-gray-400 text-sm">Posted on: {{ job.posted_date }}</p>
+        <a href="{% url 'job_detail' job.id %}" class="text-blue-600 hover:text-blue-800 font-medium">
+          View Details →
+        </a>
+      </div>
+    {% empty %}
+      <p class="text-center col-span-full text-gray-500">No jobs found matching your criteria.</p>
+    {% endfor %}
   </div>
 </div>
-{% endblock %} 
 
+{% endblock %}

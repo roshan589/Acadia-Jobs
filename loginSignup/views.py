@@ -157,11 +157,10 @@ def test(request):
 
 
 
-
 @login_required(login_url='/login')
 def job_search(request):
-    job_posts = CreateJob.objects.all()  # Default to all jobs
-    form = JobFilterForm(request.POST)
+    job_posts = CreateJob.objects.all()
+    form = JobFilterForm(request.GET)  # Use GET, not POST
 
     if form.is_valid():
         title = form.cleaned_data.get('title')
@@ -171,8 +170,7 @@ def job_search(request):
             job_posts = job_posts.filter(title__icontains=title)
         if posted_on:
             job_posts = job_posts.filter(posted_date=posted_on)
-    else:
-        print("Form is not valid:", form.errors)
+
     context = {
         'form': form,
         'job_posts': job_posts
