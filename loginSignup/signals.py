@@ -59,7 +59,7 @@ def send_apply_email(sender, instance, created, **kwargs):
                 "faculty": faculty,
                 "job": job,
                 "applicant": instance,
-                "job_url": application_url
+                "application_url": application_url
             })
 
             msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
@@ -114,7 +114,7 @@ def notify_applicant_status_change(sender, instance, created, **kwargs):
             "job": job,
             "status": status_display,
             "message": message,
-            "status_link":status_url
+            "status_url":status_url
         })
 
         msg = EmailMultiAlternatives(subject, text_content, from_email, [to_email])
