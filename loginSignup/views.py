@@ -159,23 +159,23 @@ def test(request):
 
 @login_required(login_url='/login')
 def job_search(request):
-    job_posts = CreateJob.objects.all()
-    form = JobFilterForm(request.GET)  # Use GET, not POST
+    job_posts = CreateJob.objects.none()  # Don't load all initially
+    form = JobFilterForm(request.GET)
 
     if form.is_valid():
         title = form.cleaned_data.get('title')
         posted_on = form.cleaned_data.get('posted_on')
 
+        job_posts = CreateJob.objects.all()
         if title:
             job_posts = job_posts.filter(title__icontains=title)
         if posted_on:
             job_posts = job_posts.filter(posted_date=posted_on)
 
-    context = {
+    return render(request, 'jobSearch.html', {
         'form': form,
         'job_posts': job_posts
-    }
-    return render(request, 'jobSearch.html', context)
+    })
 
 
 
