@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
   {% tailwind_css %}
 </head>
-<body class="bg-white flex flex-col min-h-screen">
+<body class="bg-white">
 
   <!-- Navigation Bar -->
   <nav class="bg-gray-200 shadow-md sticky top-0 z-50">
@@ -57,12 +57,13 @@
   </nav>
 
   <!-- Main Page Content Area -->
-  <main class="flex-grow bg-green-100">
-    {% block content %}{% endblock %}
-  </main>
+  <div class="h-screen">
+  {% block content %}
+  {% endblock %}
+  </div>
 
   <!-- Footer -->
-  <footer class="bg-gray-800 text-gray-300 py-8">
+  <footer class="bg-gray-800 text-gray-300 py-8 mt-1">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
       <div>
         <h2 class="text-xl font-semibold text-white">Acadia Jobs</h2>
