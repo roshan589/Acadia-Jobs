@@ -38,6 +38,36 @@ def student_required(view_func):
 
 
 # User Signup View
+def signup(request):
+    if request.method == "POST":
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            if CustomUser.objects.filter(email=email).exists():
+                messages.error(request, "Email already exists.")
+                return redirect('login')
+
+            # Store form data (temporarily) in session
+            request.session['signup_data'] = {
+                'username': form.cleaned_data['username'],
+                'email': email,
+                'password': form.cleaned_data['password1'],  # Use hashing later
+                # Add more fields if needed
+            }
+
+            # Generate and store verification code in session
+            code = CustomUser.generate_verification_code()  # static method
+            request.session['verification_code'] = code
+
+            # Send the verification email
+            CustomUser.send_verification_email(email, code)  # static method
+
+            messages.success(request, "Check your email for the verification code.")
+            return redirect('verify_email')
+    else:
+        form = SignupForm()
+    return render(request, 'registration/signup.html', {'form': form})
+
 def verify_email(request):
     if request.method == 'POST':
         form = VerificationCode(request.POST)
@@ -93,35 +123,7 @@ def passChangeView(request):
 
     return render(request, 'registration/passChange.html')
 
-# views.py
 
-def verify_email(request):
-    if request.method == 'POST':
-        form = VerificationCode(request.POST)
-
-        if form.is_valid():
-            code = form.cleaned_data['verification_code']
-            try:
-                # Try to find the user with the entered verification code
-                user = CustomUser.objects.get(verification_code=code)
-
-                # If code matches, verify the user
-                if user.verification_code == code:
-                    user.is_verified = True
-                    user.is_active = True  # Now the user can log in
-                    user.save()
-
-                    messages.success(request, "Your account has been verified. You can now log in.")
-                    return redirect('login')  # Redirect to login page
-                else:
-                    messages.error(request, "Invalid verification code.")
-            except CustomUser.DoesNotExist:
-                messages.error(request, "Verification code does not exist.")
-
-    else:
-        form = VerificationCode()  # Instantiate the form for GET request
-
-    return render(request, 'registration/verifyEmail.html', {'form': form})
 
 
 # Logout View
