@@ -1,5 +1,4 @@
 import string
-
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.core.mail import send_mail
 from django.db import models
@@ -42,7 +41,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
     def generateVerificationCode(self):
         """Generate a random 6-digit verification code."""
         self.verification_code = ''.join(random.choices(string.digits, k=6))
@@ -54,7 +52,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
             send_mail(
                 'Email Verification',
                 f"Hi {self.first_name},\n\nPlease use the following verification code to verify your account:\n\n{self.verification_code}\n\nThank you!",
-                'roshanadhikari0420@gmail.com',
+                settings.DEFAULT_EMAIL,
                 [self.email]
             )
 

@@ -10,6 +10,7 @@ from django.contrib import messages
 from functools import wraps
 from django.urls import reverse
 from django.conf import settings
+from django.contrib.auth.hashers import make_password
 
 
 # Decorator to ensure only users with user_type 'faculty' can access the view
@@ -37,29 +38,36 @@ def student_required(view_func):
 
 
 # User Signup View
-def signup(request):
-    if request.method == "POST":
-        form = SignupForm(request.POST)
+def verify_email(request):
+    if request.method == 'POST':
+        form = VerificationCode(request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
-            existing_user = CustomUser.objects.filter(email=email).first()
-            if existing_user:
-                messages.error(request, "Email already exists. Please use a different email.")
+            input_code = form.cleaned_data['verification_code']
+            expected_code = request.session.get('verification_code')
+            signup_data = request.session.get('signup_data')
+
+            if input_code == expected_code and signup_data:
+                # Create the user
+                user = CustomUser(
+                    username=signup_data['username'],
+                    email=signup_data['email'],
+                    password=make_password(signup_data['password']),  # Hash password
+                    is_active=True,
+                    is_verified=True,
+                )
+                user.save()
+
+                # Clean up session
+                del request.session['signup_data']
+                del request.session['verification_code']
+
+                messages.success(request, "Your account has been verified. You can now log in.")
                 return redirect('login')
-            user = form.save(commit=False)
-            user.is_active = False
-            user.is_verified = False  # Initially, the user is not verified
-            user.generateVerificationCode()  # Generate the verification code
-            user.sendVerificationEmail()  # Send the verification email with the code
-            user.save()
-            messages.success(request,
-                             "You have been successfully signed up! Please check your email for the verification code.")
-            return redirect('verify_email')  # Redirect to the verification page
-
+            else:
+                messages.error(request, "Invalid verification code.")
     else:
-        form = SignupForm()
-    return render(request, "registration/signup.html", {"form": form})
-
+        form = VerificationCode()
+    return render(request, 'registration/verifyEmail.html', {'form': form})
 
 @login_required
 def passChangeView(request):

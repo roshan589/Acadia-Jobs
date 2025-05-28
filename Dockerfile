@@ -17,6 +17,6 @@ RUN pip install -r requirements.txt
 COPY . /app
 
 
-EXPOSE 80
+EXPOSE 8000
 
-CMD ["gunicorn", "employementProject.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "--bind", "0.0.0.0:8000"]
