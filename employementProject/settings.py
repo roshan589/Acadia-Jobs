@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.99.248.41']
+ALLOWED_HOSTS = ['3.99.152.118']
 
 
 # Application definition
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django_browser_reload',
 
 ]
-DOMAIN = "3.99.248.41"
+DOMAIN = "3.99.152.118"
 SITE_ID = 1
 TAILWIND_APP_NAME = 'theme' # This is the name of the app that will be used to generate the tailwind files
 INTERNAL_IPS = ['127.0.0.1']
