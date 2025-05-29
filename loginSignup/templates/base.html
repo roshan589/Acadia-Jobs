@@ -32,12 +32,13 @@
           
           <div id="dropdown-button" onclick="toggleDropdown()" class="border border-gray-400 rounded px-5 py-2 cursor-pointer flex justify-between">
             <i class="uil uil-user text-2xl text-gray-700"></i>Options
-          </div>
-          <div id="dropdown-menu" class="hidden absolute top-50 w-400 border border-gray-300 bg-white shadow-md mt-2">
+            <div id="dropdown-menu" class="hidden absolute top-50 w-400 border border-gray-300 bg-white shadow-md mt-2">
             <div class="py-4 px-4 cursor-pointer hover:bg-gray-100">Account</div>
             <div class="py-4 px-4 cursor-pointer hover:bg-gray-100">Settings</div>
             <!-- Add more options here -->
           </div>
+          </div>
+          
 
           <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
