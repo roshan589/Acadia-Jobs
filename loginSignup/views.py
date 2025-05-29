@@ -49,7 +49,6 @@ def signup(request):
 
             # Store form data (temporarily) in session
             request.session['signup_data'] = {
-                'username': form.cleaned_data['username'],
                 'email': email,
                 'password': form.cleaned_data['password1'],  # Use hashing later
                 # Add more fields if needed
