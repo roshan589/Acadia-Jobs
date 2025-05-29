@@ -55,11 +55,11 @@ def signup(request):
             }
 
             # Generate and store verification code in session
-            code = CustomUser.generate_verification_code()  # static method
+            code = CustomUser.generateVerificationCode()  # static method
             request.session['verification_code'] = code
 
             # Send the verification email
-            CustomUser.send_verification_email(email, code)  # static method
+            CustomUser.sendVerificationEmail(email, code)  # static method
 
             messages.success(request, "Check your email for the verification code.")
             return redirect('verify_email')
