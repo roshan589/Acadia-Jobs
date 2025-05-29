@@ -29,22 +29,15 @@
 
         <div class="flex items-center space-x-4">
           {% if user.is_authenticated %}
-          <div>
-          <div x-data="{ open: false }" class="relative inline-block">
-          <a @click="open = !open" class="text-white px-4 py-2 rounded">
-            <i class="uil uil-user text-2xl text-gray-700"></i>
-          </a>
-
-          <div x-show="open"
-              @click.away="open = false"
-              x-transition
-              class="relative mt-2 bg-white shadow-lg rounded z-10 w-full max-w-xs">
-            <a href="{% url 'edit_profile' %}" class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
-            <a href="{% url 'password_change' %}" class="block px-4 py-2 hover:bg-gray-100">Change Password</a>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Option 3</a>
+          
+          <div id="dropdown-button" onclick="toggleDropdown()" class="border border-gray-400 rounded px-5 py-2 cursor-pointer flex justify-between">
+            <i class="uil uil-user text-2xl text-gray-700"></i>Options
           </div>
+          <div id="dropdown-menu" class="hidden absolute top-50 w-400 border border-gray-300 bg-white shadow-md mt-2">
+            <div class="py-4 px-4 cursor-pointer hover:bg-gray-100">Account</div>
+            <div class="py-4 px-4 cursor-pointer hover:bg-gray-100">Settings</div>
+            <!-- Add more options here -->
           </div>
-        </div>
 
           <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
@@ -99,6 +92,11 @@
     </div>
   </footer>
 
-<script src="https://unpkg.com/alpinejs" defer></script>
+<script>
+  function toggleDropdown() {
+    const dropdown = document.querySelector('#dropdown-menu');
+    dropdown.classList.toggle('hidden');
+  }
+</script>
 </body>
 </html>
