@@ -12,7 +12,6 @@ urlpatterns = [
     path('change-password/', views.passChangeView, name='password_change'),
     path('forgot-password/', views.password_reset_request, name='password_reset'),
     path('reset/<uidb64>/<token>/', views.password_reset_confirm, name='password_reset_confirm'),
-    path('password-reset-complete/', views.password_reset_complete, name='password_reset_complete'),
     path('logout/', views.logoutView, name='logout'),
     # path('login1/', views.loginView, name='login'),
     path("faculty/create-job", views.post_job, name="post_job"),
