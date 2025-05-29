@@ -25,6 +25,7 @@ from django.contrib.auth.forms import SetPasswordForm
 
 
 user  = CustomUser()
+today = timezone.now().date()
 # Decorator to ensure only users with user_type 'faculty' can access the view
 def faculty_required(view_func):
     @wraps(view_func)
@@ -264,7 +265,7 @@ def job_search(request):
         title = form.cleaned_data.get('title')
         posted_on = form.cleaned_data.get('posted_on')
 
-        job_posts = CreateJob.objects.all()
+        job_posts = CreateJob.objects.filter(application_dealine__gte=today)
         if title:
             job_posts = job_posts.filter(title__icontains=title)
         if posted_on:
@@ -281,7 +282,7 @@ def job_search(request):
 # View to list all jobs (available to all logged-in users)
 @login_required(login_url="/login")
 def jobList(request):
-    today = timezone.now().date()
+    
     job_posts = CreateJob.objects.filter(applicationDeadline__gte=today)
     context = {
         'job_posts': job_posts,
@@ -300,6 +301,12 @@ def jobDetail(request, job_id):
 def apply_job(request, job_id):
     job = get_object_or_404(CreateJob, id=job_id)
 
+    # Check if the application deadline has passed
+    if job.deadline < today:
+        messages.error(request, "Sorry, the application deadline for this job has passed.")
+        return redirect('job_list')
+
+    # Check if user already applied
     if ApplyJob.objects.filter(job=job, user=request.user).exists():
         messages.error(request, 'You have already applied for this job.')
         return redirect('job_list')
@@ -322,7 +329,6 @@ def apply_job(request, job_id):
         form = JobApplyForm(initial=initial_data)
 
     return render(request, "jobapplication.html", {'form': form, 'job': job})
-
 
 @login_required(login_url="/login")
 @student_required
