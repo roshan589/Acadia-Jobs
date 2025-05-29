@@ -1,5 +1,5 @@
 # Import necessary Django modules and decorators
-from datetime import timezone
+from django.utils import timezone
 import random
 import string
 from urllib.parse import urlencode
