@@ -39,7 +39,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)  # Track if user has verified their email
     user_type = models.CharField(max_length=10, choices=(USER_TYPE))
-
+    parent_expiry_date = models.DateField(null=True, blank=True)
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
