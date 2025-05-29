@@ -32,7 +32,7 @@
         <div x-data="{ open: false }" class="relative inline-block">
           <button 
             @click="open = !open" 
-            class="text-white px-4 py-2 rounded"
+            class="text-white px-4 py-2 rounded pointer"
             type="button"
             aria-haspopup="true" 
             :aria-expanded="open.toString()"
@@ -45,12 +45,11 @@
             @click.away="open = false" 
             x-transition 
             x-cloak 
-            style="display: none;"
             class="absolute top-full left-0 mt-1 bg-white shadow-lg rounded z-10 w-48"
           >
-            <a href="{% url 'edit_profile' %}" class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
-            <a href="{% url 'password_change' %}" class="block px-4 py-2 hover:bg-gray-100">Change Password</a>
-            <a href="#" class="block px-4 py-2 hover:bg-gray-100">Option 3</a>
+            <a href="{% url 'edit_profile' %}" class="block px-4 py-2 hover:bg-gray-900">Edit Profile</a>
+            <a href="{% url 'password_change' %}" class="block px-4 py-2 hover:bg-gray-900">Change Password</a>
+            <a href="#" class="block px-4 py-2 hover:bg-gray-900">Option 3</a>
           </div>
         </div>
 
