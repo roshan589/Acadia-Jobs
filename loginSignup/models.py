@@ -47,7 +47,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-    def isParentVaild(self):
+    def isParentAccountValid(self):
         if self.user_type != 'parent':
             return True
         return self.parent_expiry_date is None or self.parent_expiry_date >= timezone.now().date()

@@ -33,7 +33,7 @@
         Welcome, {{ user.first_name }}
     </h1>
     {% if request.user.user_type == 'parent' %}
-    <p>Your Account will bw expired on: {{user.parent_expiry_date}}</p>
+    <p class="text-center text-xl">Your Account will be expired on: {{user.parent_expiry_date}}</p>
     {% endif %}
     </div>
 
