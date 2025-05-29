@@ -176,13 +176,18 @@ def password_reset_request(request):
                     recipient_list=[user.email],
                 )
                 messages.success(request, "Password reset email sent. Please check your inbox.")
-                return redirect('password_reset')
+
+                return redirect('password_email')
             else:
                 messages.error(request, "No user found with this email.")
     else:
         form = PasswordResetRequestForm()
 
     return render(request, 'auth/passwordReset.html', {'form': form})
+
+
+def password_email(request):
+    return render(request, 'auth/passwordEmail.html')
 
 def password_reset_confirm(request, uidb64, token):
     token_generator = PasswordResetTokenGenerator()
@@ -206,7 +211,7 @@ def password_reset_confirm(request, uidb64, token):
     else:
         messages.error(request, "The password reset link is invalid or expired.")
         return render(request, 'auth/passwordResetInvalid.html')
-    
+
 
 # Logout View
 def logoutView(request):
