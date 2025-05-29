@@ -29,11 +29,11 @@
 
         <div class="flex items-center space-x-4">
           {% if user.is_authenticated %}
-          <div class="relative group inline-block">
-            <a class="text-white px-4 py-2 rounded">
+          <div class="group inline-block">
+            <button class="text-white px-4 py-2 rounded">
               <i class="uil uil-user text-2xl text-gray-700"></i>
-            </div>
-            <div class="absolute scale-95 group-hover:block group-hover:scale-100 transition-all duration-200 bg-white shadow-lg mt-1 rounded w-40 z-10">
+            </button>
+            <div class="opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 bg-white shadow-lg mt-1 rounded w-40 z-10">
               <a href="{% url 'edit_profile' %}" class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
               <a href="{% url 'password_change' %}" class="block px-4 py-2 hover:bg-gray-100">Change Password</a>
               <a href="#" class="block px-4 py-2 hover:bg-gray-100">Option 3</a>
@@ -92,6 +92,5 @@
     </div>
   </footer>
 
-<script src="https://unpkg.com/alpinejs" defer></script>
 </body>
 </html>
