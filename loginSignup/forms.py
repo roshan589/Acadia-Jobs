@@ -23,6 +23,10 @@ class SignupForm(UserCreationForm):
         model = CustomUser
         fields = ['first_name', 'last_name', 'email', 'password1', 'password2']
 
+class CreateParentForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'first_name', 'last_name', 'parent_expiry_date']
 
 class VerificationCode(forms.Form):
     verification_code = forms.CharField(max_length=6)

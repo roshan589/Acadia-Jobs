@@ -3,12 +3,12 @@ from django.utils import timezone
 import random
 import string
 from urllib.parse import urlencode
-from django.http import HttpResponseForbidden, HttpResponseRedirect
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import PasswordResetRequestForm, SignupForm, JobPost, JobApplyForm, StatusUpdateForm, VerificationCode, JobFilterForm, ProfileUpdateForm
+from .forms import CreateParentForm, PasswordResetRequestForm, SignupForm, JobPost, JobApplyForm, StatusUpdateForm, VerificationCode, JobFilterForm, ProfileUpdateForm
 from .models import CreateJob, ApplyJob, CustomUser
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib import messages
 from functools import wraps
 from django.urls import reverse
@@ -22,6 +22,8 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.contrib.auth.forms import SetPasswordForm
+from django.contrib.auth.tokens import default_token_generator
+
 
 
 user  = CustomUser()
@@ -230,6 +232,34 @@ def password_reset_confirm(request, uidb64, token):
     else:
         messages.error(request, "The password reset link is invalid or expired.")
         return render(request, 'auth/passwordResetInvalid.html')
+
+
+def create_parent_account(request):
+    if request.method == "POST":
+        form = CreateParentForm(request.POST)
+        if form.is_valid():
+            parent = form.save(commit=False)
+            parent.user_type = 'parent'
+            parent.set_unusable_password()
+            parent.save()
+
+            # Send password reset email
+            token = default_token_generator.make_token(parent)
+            uid = urlsafe_base64_encode(force_bytes(parent.pk))
+            reset_url = request.build_absolute_uri(reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token}))
+
+            send_mail(
+                "Set Your Password",
+                f"Hello,\n\nA faculty member created an account for you. Set your password here:\n{reset_url}",
+                settings.DEFAULT_FROM_EMAIL,
+                [parent.email]
+            )
+
+            messages.success(request, "Parent account created and email sent.")
+            return redirect('faculty_dashboard')
+    else:
+        form = CreateParentForm()
+    return render(request, 'faculty/create_parent.html', {'form': form})
 
 
 # Logout View
