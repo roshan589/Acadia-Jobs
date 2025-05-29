@@ -257,7 +257,7 @@ def create_parent_account(request):
             )
             parent.save()
             messages.success(request, "Parent account created and email sent.")
-            return redirect('faculty_dashboard')
+            return redirect('test')
     else:
         form = CreateParentForm()
     return render(request, 'createParent.html', {'form': form})
