@@ -107,9 +107,9 @@ def verify_email(request):
                 # Cleanup session
                 request.session.pop('signup_data', None)
                 request.session.pop('verification_code', None)
-
                 messages.success(request, "Your account has been verified. You can now log in.")
                 return redirect('login')
+                
             else:
                 messages.error(request, "Invalid verification code.")
     else:
