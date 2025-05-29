@@ -182,7 +182,7 @@ def password_reset_request(request):
     else:
         form = PasswordResetRequestForm()
 
-    return render(request, 'auth/password_reset_request.html', {'form': form})
+    return render(request, 'auth/passwordReset.html', {'form': form})
 
 def password_reset_confirm(request, uidb64, token):
     token_generator = PasswordResetTokenGenerator()
@@ -202,12 +202,12 @@ def password_reset_confirm(request, uidb64, token):
         else:
             form = SetPasswordForm(user)
 
-        return render(request, 'auth/password_reset_confirm.html', {'form': form})
+        return render(request, 'auth/passwordRestConfirm.html', {'form': form})
     else:
         messages.error(request, "The password reset link is invalid or expired.")
-        return render(request, 'auth/password_reset_invalid.html')
+        return render(request, 'auth/passwordResetInvalid.html')
     
-    
+
 # Logout View
 def logoutView(request):
     logout(request)
