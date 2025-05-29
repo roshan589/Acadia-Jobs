@@ -233,7 +233,8 @@ def password_reset_confirm(request, uidb64, token):
         messages.error(request, "The password reset link is invalid or expired.")
         return render(request, 'auth/passwordResetInvalid.html')
 
-
+@login_required(login_url="/accounts/login")
+@faculty_required
 def create_parent_account(request):
     if request.method == "POST":
         form = CreateParentForm(request.POST)
@@ -259,7 +260,7 @@ def create_parent_account(request):
             return redirect('faculty_dashboard')
     else:
         form = CreateParentForm()
-    return render(request, 'faculty/create_parent.html', {'form': form})
+    return render(request, 'createParent.html', {'form': form})
 
 
 # Logout View

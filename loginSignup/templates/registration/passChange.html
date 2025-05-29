@@ -2,6 +2,14 @@
 {% load static %}
 {% block content %}
 
+<div class="mb-6">
+      <a href="{% url 'test' %}" class="inline-flex items-center bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 text-sm font-medium transition-colors duration-200">
+        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Back
+      </a>
+    </div>
 <h2 class="text-xl font-bold mb-4">Change Password</h2>
 
 <form method="POST" class="space-y-4 max-w-md">

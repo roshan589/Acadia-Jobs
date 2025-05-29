@@ -12,6 +12,7 @@ urlpatterns = [
     path('change-password/', views.passChangeView, name='password_change'),
     path('forgot-password/', views.password_reset_request, name='password_reset'),
     path('password-reset-done/', views.password_email, name='password_email'),
+    path('faculty/create-parent', views.create_parent_account, name='parent_account'),
 
     path('reset/<uidb64>/<token>/', views.password_reset_confirm, name='password_reset_confirm'),
     path('logout/', views.logoutView, name='logout'),

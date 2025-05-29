@@ -26,7 +26,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 with open('secret_key.txt','r') as file:
   key = file.read()
+# SECRET_KEY = key
 SECRET_KEY = os.getenv('SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -54,7 +56,8 @@ DOMAIN = "3.99.152.118"
 SITE_ID = 1
 TAILWIND_APP_NAME = 'theme' # This is the name of the app that will be used to generate the tailwind files
 INTERNAL_IPS = ['127.0.0.1']
-NPM_BIN_PATH = "/usr/bin/npm"
+# NPM_BIN_PATH = "/usr/bin/npm"
+NPM_BIN_PATH = r"C:\Program Files\nodejs\npm.cmd"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -65,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_browser_reload.middleware.BrowserReloadMiddleware',
+    'loginSignup.middleware.CheckParentExpiryMiddleware'
     # "whitenoise.middleware.WhiteNoiseMiddleware",
 
 ]
@@ -189,5 +193,5 @@ EMAIL_PORT = 587  # Usually 587 for TLS
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = 'acadia.jobs@acadiau.ca'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 

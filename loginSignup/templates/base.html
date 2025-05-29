@@ -30,15 +30,16 @@
         <div class="flex items-center space-x-4">
           {% if user.is_authenticated %}
           <div class="relative inline-block">
-            <button id="user-menu-button" class="text-white px-4 py-2 rounded focus:outline-none">
+            <button id="user-menu-button" class="text-gray-700 px-4 py-2 rounded focus:outline-none">
               <i class="uil uil-user text-2xl text-gray-700"></i>
+              <span>Menu</span>
             </button>
 
             <div id="user-menu-dropdown"
-                class="hidden absolute right-0 mt-2 bg-white shadow-lg rounded w-40 z-10">
+                class="hidden absolute right-0 mt-2 bg-white shadow-lg rounded w-80 z-10">
               <a href="{% url 'edit_profile' %}" class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
               <a href="{% url 'password_change' %}" class="block px-4 py-2 hover:bg-gray-100">Change Password</a>
-              <a href="#" class="block px-4 py-2 hover:bg-gray-100">Option 3</a>
+              <a href="{% url 'parent_account'  %}" class="block px-4 py-2 hover:bg-gray-100">Create a parent account.</a>
             </div>
           </div>
 
