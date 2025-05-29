@@ -293,6 +293,14 @@ def jobList(request):
 @login_required(login_url="/accounts/login")
 def jobDetail(request, job_id):
     job = get_object_or_404(CreateJob, id=job_id)
+    now = timezone.now().date()
+    
+    # If the deadline has passed, redirect (or show an expired template)
+    if job.applicationDeadline < now:
+        messages.error(request, "This job is no longer accepting applications.")
+        return redirect('job_list')  # or use your job-list URL name
+    
+    # Otherwise, render the normal detail page
     return render(request, 'jobDetail.html', {'job': job})
 
 # Student-only view to apply for a job
