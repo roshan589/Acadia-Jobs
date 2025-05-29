@@ -176,7 +176,7 @@ def password_reset_request(request):
                     recipient_list=[user.email],
                 )
                 messages.success(request, "Password reset email sent. Please check your inbox.")
-                return redirect('password_reset_confirm')
+                return redirect('password_reset')
             else:
                 messages.error(request, "No user found with this email.")
     else:
