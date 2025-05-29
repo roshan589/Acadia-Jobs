@@ -265,7 +265,7 @@ def job_search(request):
         title = form.cleaned_data.get('title')
         posted_on = form.cleaned_data.get('posted_on')
 
-        job_posts = CreateJob.objects.filter(application_dealine__gte=today)
+        job_posts = CreateJob.objects.filter(applicationDeadline__gte=today)
         if title:
             job_posts = job_posts.filter(title__icontains=title)
         if posted_on:
