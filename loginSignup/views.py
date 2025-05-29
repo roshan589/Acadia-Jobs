@@ -242,7 +242,7 @@ def create_parent_account(request):
             parent = form.save(commit=False)
             parent.user_type = 'parent'
             parent.set_unusable_password()
-            parent.save()
+            parent.save(commit=False)
 
             # Send password reset email
             token = default_token_generator.make_token(parent)
@@ -255,7 +255,7 @@ def create_parent_account(request):
                 settings.DEFAULT_FROM_EMAIL,
                 [parent.email]
             )
-
+            parent.save()
             messages.success(request, "Parent account created and email sent.")
             return redirect('faculty_dashboard')
     else:
