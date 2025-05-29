@@ -67,7 +67,7 @@ def signup(request):
             send_mail(
                 'Email Verification',
                 f"Hi {form.cleaned_data['first_name']},\n\nPlease use this verification code to verify your account:\n\n{code}\n\nThanks!",
-                settings.DEFAULT_EMAIL,
+                settings.DEFAULT_FROM_EMAIL,
                 [email],
                 fail_silently=False,
             )
