@@ -4,7 +4,7 @@ import string
 from urllib.parse import urlencode
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import SignupForm, JobPost, JobApplyForm, StatusUpdateForm, VerificationCode, JobFilterForm, ProfileUpdateForm
+from .forms import PasswordResetRequestForm, SignupForm, JobPost, JobApplyForm, StatusUpdateForm, VerificationCode, JobFilterForm, ProfileUpdateForm
 from .models import CreateJob, ApplyJob, CustomUser
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
@@ -14,8 +14,16 @@ from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.contrib.auth import get_user_model
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
+from django.contrib.auth.forms import SetPasswordForm
 
 
+user  = CustomUser()
 # Decorator to ensure only users with user_type 'faculty' can access the view
 def faculty_required(view_func):
     @wraps(view_func)
@@ -141,8 +149,65 @@ def passChangeView(request):
     return render(request, 'registration/passChange.html')
 
 
+def password_reset_request(request):
+    if request.method == 'POST':
+        form = PasswordResetRequestForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            user = CustomUser.objects.filter(email=email).first()  # use your CustomUser
+            if user:
+                token_generator = PasswordResetTokenGenerator()
+                token = token_generator.make_token(user)
+                uid = urlsafe_base64_encode(force_bytes(user.pk))
+                reset_url = request.build_absolute_uri(
+                    reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
+                )
 
+                send_mail(
+                    subject="Password Reset Request",
+                    message=(
+                        f"Hi {user.first_name},\n\n"
+                        f"To reset your password, click the link below:\n"
+                        f"{reset_url}\n\n"
+                        "If you didn’t request this, please ignore this email.\n\n"
+                        "Thanks!"
+                    ),
+                    from_email="no-reply@yourdomain.com",  # Change to your sender email
+                    recipient_list=[user.email],
+                )
+                messages.success(request, "Password reset email sent. Please check your inbox.")
+                return redirect('password_reset_request')
+            else:
+                messages.error(request, "No user found with this email.")
+    else:
+        form = PasswordResetRequestForm()
 
+    return render(request, 'auth/password_reset_request.html', {'form': form})
+
+def password_reset_confirm(request, uidb64, token):
+    token_generator = PasswordResetTokenGenerator()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+
+    if user is not None and token_generator.check_token(user, token):
+        if request.method == 'POST':
+            form = SetPasswordForm(user, request.POST)
+            if form.is_valid():
+                form.save()  # saves new password
+                messages.success(request, "Your password has been reset successfully.")
+                return redirect('login')
+        else:
+            form = SetPasswordForm(user)
+
+        return render(request, 'auth/password_reset_confirm.html', {'form': form})
+    else:
+        messages.error(request, "The password reset link is invalid or expired.")
+        return render(request, 'auth/password_reset_invalid.html')
+    
+    
 # Logout View
 def logoutView(request):
     logout(request)
