@@ -21,7 +21,7 @@ class PasswordResetRequestForm(forms.Form):
 class SignupForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ['user_type', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'email', 'password1', 'password2']
 
 
 class VerificationCode(forms.Form):

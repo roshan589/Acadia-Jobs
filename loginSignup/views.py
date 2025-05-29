@@ -56,17 +56,32 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
+            first_char = email.split('@')[0][0]
+
             if CustomUser.objects.filter(email=email).exists():
                 messages.error(request, "Email already exists.")
                 return redirect('login')
+
+            if not email.endswith('acadiau.ca'):
+                form.add_error('email', "Only Acadia members can register.")
+                return render(request, 'registration/signup.html', {'form': form})
+
+            # Auto-detect user type
+            if first_char.isdigit():
+                user_type = 'student'
+            elif first_char.isalpha():
+                user_type = 'faculty'
+            else:
+                form.add_error('email', "Invalid Acadia email format.")
+                return render(request, 'registration/signup.html', {'form': form})
 
             # Temporarily store user info in session
             request.session['signup_data'] = {
                 'email': email,
                 'first_name': form.cleaned_data['first_name'],
                 'last_name': form.cleaned_data['last_name'],
-                'user_type': form.cleaned_data['user_type'],
-                'password': form.cleaned_data['password1'],  # Password will be hashed later
+                'user_type': user_type,
+                'password': form.cleaned_data['password1'],  # Will be hashed later
             }
 
             # Generate a 6-digit code
@@ -86,7 +101,9 @@ def signup(request):
             return redirect('verify_email')
     else:
         form = SignupForm()
+
     return render(request, 'registration/signup.html', {'form': form})
+
 
 def verify_email(request):
     if request.method == 'POST':

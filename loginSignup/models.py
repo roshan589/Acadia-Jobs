@@ -25,13 +25,20 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+
+    USER_TYPE = (
+        ('student', 'Student'), 
+        ('faculty', 'Faculty'),
+        ('parent', 'Parent')
+    )
+
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)  # Track if user has verified their email
-    user_type = models.CharField(max_length=10, choices=(('student', 'Student'), ('faculty', 'Faculty')))
+    user_type = models.CharField(max_length=10, choices=(USER_TYPE))
 
     objects = CustomUserManager()
 
