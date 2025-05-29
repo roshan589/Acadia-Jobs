@@ -202,7 +202,7 @@ def password_reset_confirm(request, uidb64, token):
         else:
             form = SetPasswordForm(user)
 
-        return render(request, 'auth/passwordRestConfirm.html', {'form': form})
+        return render(request, 'auth/passwordResetConfirm.html', {'form': form})
     else:
         messages.error(request, "The password reset link is invalid or expired.")
         return render(request, 'auth/passwordResetInvalid.html')
