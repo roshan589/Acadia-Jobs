@@ -1,4 +1,6 @@
 # Import necessary Django modules and decorators
+import random
+import string
 from urllib.parse import urlencode
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -11,6 +13,7 @@ from functools import wraps
 from django.urls import reverse
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
+from django.core.mail import send_mail
 
 
 # Decorator to ensure only users with user_type 'faculty' can access the view
@@ -47,20 +50,27 @@ def signup(request):
                 messages.error(request, "Email already exists.")
                 return redirect('login')
 
-            # Store form data (temporarily) in session
+            # Temporarily store user info in session
             request.session['signup_data'] = {
                 'email': email,
-                'password': form.cleaned_data['password1'],  # Use hashing later
-                # Add more fields if needed
+                'first_name': form.cleaned_data['first_name'],
+                'last_name': form.cleaned_data['last_name'],
+                'user_type': form.cleaned_data['user_type'],
+                'password': form.cleaned_data['password1'],  # Password will be hashed later
             }
-            user = CustomUser()
 
-            # Generate and store verification code in session
-            code = user.generateVerificationCode()  # static method
+            # Generate a 6-digit code
+            code = ''.join(random.choices(string.digits, k=6))
             request.session['verification_code'] = code
 
-            # Send the verification email
-            user.sendVerificationEmail(email, code)  # static method
+            # Send email
+            send_mail(
+                'Email Verification',
+                f"Hi {form.cleaned_data['first_name']},\n\nPlease use this verification code to verify your account:\n\n{code}\n\nThanks!",
+                settings.DEFAULT_EMAIL,
+                [email],
+                fail_silently=False,
+            )
 
             messages.success(request, "Check your email for the verification code.")
             return redirect('verify_email')
@@ -77,19 +87,26 @@ def verify_email(request):
             signup_data = request.session.get('signup_data')
 
             if input_code == expected_code and signup_data:
-                # Create the user
+                # Final check just in case
+                if CustomUser.objects.filter(email=signup_data['email']).exists():
+                    messages.error(request, "This email is already registered.")
+                    return redirect('login')
+
+                # Create and save verified user
                 user = CustomUser(
-                    username=signup_data['username'],
                     email=signup_data['email'],
-                    password=make_password(signup_data['password']),  # Hash password
+                    first_name=signup_data['first_name'],
+                    last_name=signup_data['last_name'],
+                    user_type=signup_data['user_type'],
                     is_active=True,
                     is_verified=True,
                 )
+                user.password = make_password(signup_data['password'])  # Hash password
                 user.save()
 
-                # Clean up session
-                del request.session['signup_data']
-                del request.session['verification_code']
+                # Cleanup session
+                request.session.pop('signup_data', None)
+                request.session.pop('verification_code', None)
 
                 messages.success(request, "Your account has been verified. You can now log in.")
                 return redirect('login')
