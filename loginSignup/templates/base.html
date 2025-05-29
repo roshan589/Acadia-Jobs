@@ -27,19 +27,21 @@
         </div>
         {% endif %}
 
-        <div x-data="{ open: false }" class="relative inline-block">
+        <div class="flex items-center space-x-4">
+          {% if user.is_authenticated %}
+          <div x-data="{ open: false }" class="relative inline-block">
             <button @click="open = !open" class="text-white px-4 py-2 rounded">
               <i class="uil uil-user text-2xl text-gray-700"></i>
             </button>
             <div x-show="open"
                 @click.away="open = false"
                 x-transition
-                class="absolute bg-white shadow-lg mt-1 rounded w-40 px-5 z-10">
+                class="absolute bg-white shadow-lg mt-1 rounded w-100 z-10">
               <a href="{% url 'edit_profile' %}" class="block px-4 py-2 hover:bg-gray-100">Edit Profile</a>
               <a href="{% url 'password_change' %}" class="block px-4 py-2 hover:bg-gray-100">Change Password</a>
               <a href="#" class="block px-4 py-2 hover:bg-gray-100">Option 3</a>
             </div>
-        </div>
+          </div>
 
           <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
