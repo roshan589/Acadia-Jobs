@@ -1,4 +1,5 @@
 # Import necessary Django modules and decorators
+from datetime import timezone
 import random
 import string
 from urllib.parse import urlencode
@@ -280,7 +281,8 @@ def job_search(request):
 # View to list all jobs (available to all logged-in users)
 @login_required(login_url="/login")
 def jobList(request):
-    job_posts = CreateJob.objects.all()
+    today = timezone.now().date()
+    job_posts = CreateJob.objects.filter(applicationDeadline__gte=today)
     context = {
         'job_posts': job_posts,
     }
