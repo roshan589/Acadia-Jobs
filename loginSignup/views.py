@@ -53,13 +53,14 @@ def signup(request):
                 'password': form.cleaned_data['password1'],  # Use hashing later
                 # Add more fields if needed
             }
+            user = CustomUser()
 
             # Generate and store verification code in session
-            code = CustomUser.generateVerificationCode()  # static method
+            code = user.generateVerificationCode()  # static method
             request.session['verification_code'] = code
 
             # Send the verification email
-            CustomUser.sendVerificationEmail(email, code)  # static method
+            user.sendVerificationEmail(email, code)  # static method
 
             messages.success(request, "Check your email for the verification code.")
             return redirect('verify_email')
