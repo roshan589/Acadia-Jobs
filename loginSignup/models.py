@@ -31,7 +31,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)  # Track if user has verified their email
-    verification_code = models.CharField(max_length=6, blank=True, null=True)
     user_type = models.CharField(max_length=10, choices=(('student', 'Student'), ('faculty', 'Faculty')))
 
     objects = CustomUserManager()
@@ -41,20 +40,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-    def generateVerificationCode(self):
-        """Generate a random 6-digit verification code."""
-        self.verification_code = ''.join(random.choices(string.digits, k=6))
-        self.save()  # Save the code to the database
-
-    def sendVerificationEmail(self):
-        """Send the verification code to the user's email."""
-        if self.verification_code:
-            send_mail(
-                'Email Verification',
-                f"Hi {self.first_name},\n\nPlease use the following verification code to verify your account:\n\n{self.verification_code}\n\nThank you!",
-                settings.DEFAULT_EMAIL,
-                [self.email]
-            )
 
 
 class CreateJob(models.Model):
